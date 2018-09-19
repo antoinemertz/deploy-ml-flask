@@ -16,10 +16,9 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
-    output = 1
-    #predict_data = np.array([data['sl'], data['sw'], data['pl'], data['pw']])
-    #y_hat = svmIrisModel.predict(predict_data)
-    #output = [y_hat[0]]
+    predict_data = np.array([data['sl'], data['sw'], data['pl'], data['pw']]).reshape((-1,4))
+    y_hat = svm_model.predict(predict_data)
+    output = [y_hat[0]]
     return(jsonify(results=output))
 
 # Load the pre-trained and persisted SVM model
