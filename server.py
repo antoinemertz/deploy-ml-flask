@@ -15,10 +15,11 @@ def home():
 # Prediction page
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.get_json()
+    data = request.get_json(force=True)
     predict_data = np.array([data['sl'], data['sw'], data['pl'], data['pw']]).reshape((-1,4))
-    y_hat = svm_model.predict(predict_data)
-    output = [y_hat[0]]
+    y_hat = svm_model.predict(predict_data).reshape((1, -1))
+    output = y_hat.astype(int)
+    output = output.tolist()
     return(jsonify(results=output))
 
 # Load the pre-trained and persisted SVM model
